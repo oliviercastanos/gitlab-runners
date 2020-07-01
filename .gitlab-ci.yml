@@ -1,0 +1,40 @@
+variables:
+  NO_PROXY: gitlab.url
+  VOLUME_DIRECTORY: /data
+  
+stages:
+  - compile
+  - package
+compile:
+  
+  script:
+    - mvn -B compile
+
+package-dev:
+  stage: package
+  only:
+    - develop
+  script:
+    - mvn -B versions:set -DnewVersion=DEV-SNAPSHOT
+    - mvn -B versions:commit
+    - mvn -B -Dmaven.test.skip=true deploy
+
+package-tst:
+  stage: package
+  only:
+    - test
+  script:
+    - mvn versions:set -DnewVersion=TST-SNAPSHOT
+    - mvn versions:commit
+    - mvn -B -Dmaven.test.skip=true deploy
+
+package-release:
+  stage: package
+  only:
+    - master
+  script:
+    - mvn -B -Dmaven.test.skip=true deploy
+
+
+
+
