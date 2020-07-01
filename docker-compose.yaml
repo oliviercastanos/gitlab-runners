@@ -1,0 +1,13 @@
+version: "3.5"
+networks:
+  runners-net:
+   name: runners
+services:
+    runner:
+      networks: ["runners-net"]
+      hostname:runner
+      restart: unless-stopped
+      container_name: runner
+      volumes: ["/var/run/docker.sock:/var/run/docker.sock","/data/runner:/etc/gitlab-runner","/data/runner-data:/data","/root/.docker/config.json:/root/.docker/config.json"]
+      image: gitlab/gitlab-runner:v12.4.1
+    
