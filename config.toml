@@ -1,0 +1,29 @@
+  name = "runner"
+  url = "https://gitlab.url"
+  token = "f8d25970a2dc08cc5618f5e3558a48"
+  tls-ca-file = "/etc/gitlab-runner/certs/certificate.crt" 
+  executor = "docker"
+  environment = ["GIT_SSL_NO_VERIFY=true", "MAVEN_OPTS=-Xmx1024m"]
+
+  [runners.custom_build_dir]
+  [runners.docker]
+    tls_verify = false
+    pull_policy = "if-not-present"
+    image = "openjdk:11"
+    privileged = false
+    disable_entrypoint_overwrite = false
+    oom_kill_disable = false
+    disable_cache = true
+    shm_size = 0
+    cpu_request = "1000m"
+    volumes = ["/data/runner-data:/data:rw"]
+    cpu_limit = "2000m"
+    memory_request = "1024Mi"
+    memory_limit = "4096Mi"
+    helper_cpu_request = "100m"
+    helper_cpu_limit = "500m"
+    helper_memory_request = "500Mi"
+    helper_memory_limit = "1024Mi"
+  [runners.cache]
+    [runners.cache.s3]
+    [runners.cache.gcs]
